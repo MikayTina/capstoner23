@@ -1,15 +1,32 @@
 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
   <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+
 
      <script src="{{asset('vendor/fullcalendar/lib/jquery.min.js')}}"></script>
     <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
     <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
 
+          <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
+
    <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script>
 
   <!--<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>-->
+
+  <!--<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+
+   <!--<script src="{{asset('vendor/fullcalendar/lib/jquery.min.js')}}"></script>
+   <script src="{{asset('vendor/fullcalendar/lib/jquery-ui.min.js')}}"></script>
+   <script src="{{asset('vendor/fullcalendar/lib/moment.min.js')}}"></script>
+   <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
+
+   <script src="{{asset('vendor/fullcalendar/fullcalendar.min.js')}}"></script>-->
+
+
   <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->
@@ -29,7 +46,8 @@
 
   <script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
 
-  <script src="{{asset('vendor/multi-select/js/jquery.multi-select.js')}}"></script>
+ <script src="{{asset('vendor/duallistbox/dist/jquery.bootstrap-duallistbox.min.js')}}"></script>
+
 
 
    <script>
@@ -44,9 +62,11 @@
   
   </script>
 
+
   @yield('script')
 
-<script> 
+  
+  <script> 
   
   $('#editModal').on('show.bs.modal', function (event) {
 
@@ -92,8 +112,21 @@
 
 
 
+
     
  
+
+  $('#deletePatient').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+
+    var patientid = button.data('patientid')
+    var modal = $(this)
+
+    modal.find('.modal-body #patientid').val(patientid);
+  })
+
+
 
   $(function() {
   $('input[id="case"]').on('click', function(){
@@ -106,59 +139,69 @@
   });
 });
 
+  $('#transferPatient').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+
+    var patientid = button.data('patientid');
+    var patientdep = button.data('patientdep');
+    var modal = $(this);
+
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+  $('#transferReferral').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget);
+    var button1 = $("#transferPatient #patientid").val().trim();
+  
+    var depid = button.data('depid');
+    var patientid = $('#transferPatient #patientid').val().trim();
+    var patientdep = $('#transferPatient #patientdep').val().trim();
+    var modal = $(this);
+
+    modal.find('.modal-body #depid').val(depid);
+    modal.find('.modal-body #patientid').val(patientid);
+    modal.find('.modal-body #patientdep').val(patientdep);
+  })
+
+
   $(function() {
-  $('input[id="new case"]').on('click', function(){
+  $('input[name="casetype"]').on('click', function(){
+
     if ($(this).val() == 'New Case') {
+      document.getElementById("casetype").disabled = true;
       $('#textboxes').hide();
     }
-    else {
-      $('#textboxes').show();
-    }
-  });
-});
-
-  $(function() {
-  $('input[id="old case"]').on('click', function(){
-    if ($(this).val() == 'Old Case') {
+    else if ($(this).val() == 'Old Case'){
+      document.getElementById("casetype").disabled = true;
       $('#textboxes').hide();
     }
-    else {
+    else if($(this).val() == 'With Court Case'){
+      document.getElementById("casetype").disabled = false;
       $('#textboxes').show();
-    }
+     }
+    });
   });
-});
+
 
   $(function() {
-  $('input[id="Voluntary Submission"]').on('click', function(){
+  $('input[name="type"]').on('click', function(){
+
     if ($(this).val() == 'Voluntary Submission') {
+      document.getElementById("type").disabled = true;
       $('#textbox').hide();
     }
-    else {
-      $('#textbox').show();
-    }
-  });
-});
-
-  $(function() {
-  $('input[id="Compulsory Submission"]').on('click', function(){
-    if ($(this).val() == 'Compulsory Submission') {
+    else if ($(this).val() == 'Compulsory Submission'){
+      document.getElementById("type").disabled = true;
       $('#textbox').hide();
     }
-    else {
+    else if($(this).val() == 'Others'){
+      document.getElementById("type").disabled = false;
       $('#textbox').show();
-    }
+     }
+    });
   });
-});
-
-  $(function() {
-  $('input[id="others"]').on('click', function(){
-    if ($(this).val() == 'Others') {
-      $('#textbox').show();
-    }
-    else {
-      $('#textbox').hide();
-    }
-  });
-});
   
 </script>

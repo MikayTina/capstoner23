@@ -1,29 +1,11 @@
 @extends('main')
 
-<!--@section('style')
-<!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>-->
-   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css"/>
-     <link rel="stylesheet" href="=https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.print.css"/>
-     <script src=https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js></script>
- 
-
-@endsection
-
 
 @section('content')
 
-<div class="container border border-gray" style="margin-top: 50px">
-	<div class="form-group" style="margin-top: 10px">
-    <div class="row">
-        <div class="col-md-12 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container">
+                <div class="col-md-10">
+        <div id='calendar'></div>
 </div>
 </div>
 <br>
@@ -33,30 +15,89 @@
 @endsection
 
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
-@endsection-->
+<script type="text/javascript">
+
+  $(function () {
+
+    var evt = [];
+     $.ajax({ 
+          url:"{{URL::route('getEvent')}}",
+          type:"GET",
+          dataType:"JSON",
+          async:false
+    }).done(function(r){
+
+          evt = r;
+    });
+    
+            
+
+      $("#calendar").fullCalendar({
 
 
-@section('content')
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,listWeek'
+      },
 
-<div class="containerx">
-		<div id='calendar'></div>
-</div>
-<br>
-<br>
-<br>
+      eventTextColor: '#FFFFFF',
 
+
+
+
+      minTime: "06:00:00",
+      maxTime: "20:00:00",
+      events: evt,
+
+      dayClick: function(date, end, jsEvent, view, resourceObj) {
+
+               var current_date = moment().format('YYYY-MM-DD')
+
+              if(current_date <= date.format()) {
+               var r = confirm('Do you want to plot on this date ' + date.format());
+
+                if(r== true){
+
+
+                   var base = '{{ URL::to('/create_event') }}';
+
+                  window.location.href=base;
+                }
+            
+            }
+        },
+
+       dayRender: function(date, cell){
+
+             var current_date = moment().format('YYYY-MM-DD');
+
+              if(current_date > date.format()) {
+
+                  cell.css("background", "#e8e8e8");
+              }
+       
+      },
+
+      
+       eventClick: function(calEvent, jsEvent, view) {
+
+              var id = calEvent.id;
+
+                var url = '{{ URL::to('/view_event') }}'+'/'+id;
+
+                window.location.href=url;
+
+       }
+
+    });
+
+
+
+
+      })
+
+</script>
 @endsection
 
-@section('script')
 
-	<script type="text/javascript">
-			$(function(){
-
-				$('#calendar').fullcalendar();
-
-			})
-		
-	</script>
-@endsection

@@ -56,6 +56,17 @@ Route::group(['middleware' =>'auth'], function()
       	'as'=> 'showDeps'
     ]);
 
+    Route::get('/showCalendar', [
+      	'uses'=>'CalendarController@showCalen',
+      	'as'=> 'showCalendar'
+    ]);
+
+	 Route::get('/getEvent', ['as'=>'getEvent',
+    'uses'=>'CalendarController@get_Events'
+
+	]); 
+
+
 	  Route::get('/showCalendar', [
       	'uses'=>'CalendarController@showCalen',
       	'as'=> 'showCalendar'
@@ -66,11 +77,21 @@ Route::group(['middleware' =>'auth'], function()
 
 	]);
 
+
+	Route::post('/refers', "ReferController@createRefer");
+
+	Route::get('/refers/{id}', "ReferController@getRefer");
+
+	Route::put('/refers/{id?}', "ReferController@putRefer");
+
 	 Route::any('/chooseuser', "UserController@chooseuser_role");
 
 	 Route::any('/createuserrole', "UserController@createuserrole");
 
 	 Route::get('/create_user/{id}', "UserController@create_user");
+
+
+	 Route::get('/create_user', "UserController@create_user");
 
 	 Route::any('/create_dep', "UserController@postcreate_dep");
 
@@ -88,6 +109,8 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::post('/deleteuser', "UserController@deleteuser");
 
+	 Route::get('/showdep_users/{did}/{rid}', "ViewController@showdepuser");
+
 	 Route::any('/addpatient', "PatientController@addpatient");
 
 	 Route::post('/refer', "PatientController@refer");
@@ -96,9 +119,84 @@ Route::group(['middleware' =>'auth'], function()
 
 	 Route::any('/add_event', "CalendarController@add_event");
 
-	// Route::get('/showCalendar/event', "CalendarController@get_Events");
+	 Route::get('/view_event/{id}', "CalendarController@viewevent");
 
-	
+	 Route::any('/showpatients', "PatientController@showpatient");
+
+	 Route::get('/viewpatient/{id}', "PatientController@viewpatient");
+
+	 Route::get('/viewpatients/{id}/{pid}/{tid}', "PatientController@viewpatients");
+
+	 Route::get('/viewpatientz/{id}/{nid}', "PatientController@viewpatientz");
+
+	 Route::any('/patient_dep', "PatientController@patientdep");
+
+	 Route::get('/choosef/{id}', "PatientController@chooseform");
+
+	 Route::get('/intakeform/{id}', "PatientController@intakeform");
+
+	 Route::get('/ddeform/{id}', "PatientController@ddeform");
+
+	 Route::post('/patientsave_intake', "PatientController@save_intake");
+
+	 Route::post('/patientsave_dde', "PatientController@save_dde");
+
+	 Route::post('/deletepatient', "PatientController@flagdelete");
+
+	 Route::get('/markAsRead', "NotificationsController@markAsRead");
+
+	 Route::post('/patientTransfer', "PatientController@transferPatient");
+
+	 Route::get('/transfer_patient_now/{id}/{did}/{tid}/{pid}',"PatientController@patientTransfer");
+
+	 Route::any('/showemployees',"ViewController@showemployees");
+
+	 Route::any('/newemployee',"RegisterController@newemployee");
+
+	 Route::post('/create_employee',"RegisterController@create_employee");
+
+	 Route::post('/update_employeenow',"EmployeeController@update_employeenow");
+
+	 Route::post('/delete_employee', "EmployeeController@delete_employeenow");
+
+	 Route::any('/create_event', "CalendarController@create_event");
+
+	 Route::any('/add_event', "CalendarController@add_event");
+
+	 Route::get('/view_event/{id}', "CalendarController@viewevent");
+
+	 Route::any('/showpatients', "PatientController@showpatient");
+
+	 Route::get('/viewpatient/{id}', "PatientController@viewpatient");
+
+	 Route::get('/viewpatients/{id}/{pid}/{tid}', "PatientController@viewpatients");
+
+	 Route::get('/viewpatientz/{id}/{nid}', "PatientController@viewpatientz");
+
+	 Route::any('/patient_dep', "PatientController@patientdep");
+
+	 Route::get('/choosef/{id}', "PatientController@chooseform");
+
+	 Route::get('/intakeform/{id}', "PatientController@intakeform");
+
+	 Route::get('/ddeform/{id}', "PatientController@ddeform");
+
+	 Route::post('/patientsave_intake', "PatientController@save_intake");
+
+	 Route::post('/patientsave_dde', "PatientController@save_dde");
+
+	 Route::post('/deletepatient', "PatientController@flagdelete");
+ 
+	 Route::any('/add_intervention', "InterventionController@addintervention");
+
+	 Route::any('/showIntervention', "InterventionController@showintervention");
 
 
+	 Route::get('/markAsRead', "NotificationsController@markAsRead");
+
+	 Route::post('/patientTransfer', "PatientController@transferPatient");
+
+	 Route::get('/transfer_patient_now/{id}/{did}/{tid}',"PatientController@patientTransfer");
+
+	 Route::any('/logs', "ViewController@showlogs");
 });
